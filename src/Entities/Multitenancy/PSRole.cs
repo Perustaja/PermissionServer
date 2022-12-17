@@ -8,25 +8,26 @@ namespace PermissionServer.Entities.Multitenancy
     /// or may be global and shared as a non-removable default value across tenants.
     /// </summary>
     public class PSRole<TPerm, TPermCat> : IdentityRole<Guid>
-        where TPerm : System.Enum
-        where TPermCat : System.Enum
+        where TPerm : Enum
+        where TPermCat : Enum
     {
-        public Guid? TenantId { get; private set; }
-        public string Description { get; private set; }
-        public bool IsGlobal { get; private set; }
+        public Guid? TenantId { get; set; }
+        public string Description { get; set; }
+        public bool IsGlobal { get; set; }
         /// <summary>Whether or not the role is the default for a new tenant owner.</summary>
-        public bool IsGlobalAdminDefault { get; private set; }
+        public bool IsGlobalAdminDefault { get; set; }
         /// <summary>Whether or not the role is the default for a new user.</summary>
-        public bool IsGlobalDefaultForNewUsers { get; private set; }
+        public bool IsGlobalDefaultForNewUsers { get; set; }
         /// <summary>
         /// Whether or not the role is the default for a new user for this tenant. Takes priority 
         /// over global.
         /// </summary>
-        public bool IsTenantDefaultForNewUsers { get; private set; }
+        public bool IsTenantDefaultForNewUsers { get; set; }
         [ForeignKey("TenantId")]
         public PSTenant<TPerm, TPermCat> Tenant { get; set; }
         public List<PSRolePermission<TPerm, TPermCat>> RolePermissions { get; set; }
-        public List<PSUserTenantRole<TPerm, TPermCat>> UserOrganizationRoles { get; set; }
+        public List<PSUserTenantRole<TPerm, TPermCat>> UserTenantRoles { get; set; }
+        
         public PSRole() { }
 
         /// <summary>

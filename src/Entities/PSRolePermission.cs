@@ -4,13 +4,14 @@ namespace PermissionServer.Entities
     /// Join table representing permissions roles have.
     /// </summary>
     public class PSRolePermission<TPerm, TPermCat> 
-        where TPerm : System.Enum
-        where TPermCat : System.Enum
+        where TPerm : Enum
+        where TPermCat : Enum
     {
-        public Guid RoleId { get; private set; }
-        public string PermissionId { get; private set; }
+        public Guid RoleId { get; set; }
+        public string PermissionId { get; set; }
         public PSRole<TPerm, TPermCat> Role { get; set; }
         public Permission<TPerm, TPermCat> Permission { get; set; }
+
         public PSRolePermission() { }
         public PSRolePermission(Guid roleId, TPerm pEnum)
         {

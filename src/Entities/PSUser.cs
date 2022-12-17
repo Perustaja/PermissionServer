@@ -2,10 +2,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace PermissionServer.Entities
 {
-    public class User : IdentityUser<Guid>
+    /// <summary>
+    /// Base entity for a user. 
+    /// </summary>
+    public class PSUser<TPerm, TPermCat> : IdentityUser<Guid>
+        where TPerm : Enum
+        where TPermCat : Enum
     {
-        public User() { }
-        public User(string fName, string lName, string email)
+        public List<PSUserRole<TPerm, TPermCat>> UserRoles { get; set; }
+        
+        public PSUser() { }
+        public PSUser(string email)
         {
             Id = Guid.NewGuid();
             UserName = email;

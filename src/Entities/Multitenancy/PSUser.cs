@@ -6,11 +6,12 @@ namespace PermissionServer.Entities.Multitenancy
     /// Base entity for a user. 
     /// </summary>
     public class PSUser<TPerm, TPermCat> : IdentityUser<Guid>
-        where TPerm : System.Enum
-        where TPermCat : System.Enum
+        where TPerm : Enum
+        where TPermCat : Enum
     {
         public List<PSUserTenant<TPerm, TPermCat>> UserTenants { get; set; }
         public List<PSUserTenantRole<TPerm, TPermCat>> UserTenantRoles { get; set; }
+        
         public PSUser() { }
         public PSUser(string email)
         {

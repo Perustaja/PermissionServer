@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using PermissionServer.Entities.Bases;
 
-namespace PermissionServer.Entities
+namespace PermissionServer.Entities.Multitenancy
 {
     /// <summary>
     /// Developer-designed category for grouping and displaying permissions to user.

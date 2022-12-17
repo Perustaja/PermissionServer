@@ -1,10 +1,10 @@
-using PermissionServer.Entities.Multitenancy;
+using PermissionServer.Entities;
 
-namespace PermissionServer.Configuration.Multitenancy
+namespace PermissionServer.Configuration
 {
     public class GlobalRolesOptions<TPerm, TPermCat>
-        where TPerm : System.Enum
-        where TPermCat : System.Enum
+        where TPerm : Enum
+        where TPermCat : Enum
     {
         private List<GlobalRoleBuilder<TPerm, TPermCat>> _builders 
             = new List<GlobalRoleBuilder<TPerm, TPermCat>>();

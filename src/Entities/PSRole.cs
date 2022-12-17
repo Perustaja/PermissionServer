@@ -7,14 +7,14 @@ namespace PermissionServer.Entities
     /// Defines a group of permissions and some configuration values. 
     /// </summary
     public class PSRole<TPerm, TPermCat> : IdentityRole<Guid>
-        where TPerm : System.Enum
-        where TPermCat : System.Enum
+        where TPerm : Enum
+        where TPermCat : Enum
     {
-        public string Description { get; private set; }
+        public string Description { get; set; }
         /// <summary>Whether the role is the default role given to new users upon registration.</summary>
-        public bool IsDefaultForNewUsers { get; private set; }
-        [ForeignKey("TenantId")]
+        public bool IsDefaultForNewUsers { get; set; }
         public List<PSRolePermission<TPerm, TPermCat>> RolePermissions { get; set; }
+
         public PSRole() { }
 
         /// <summary>

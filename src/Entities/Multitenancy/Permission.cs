@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PermissionServer.Entities.Bases;
 
-namespace PermissionServer.Entities
+namespace PermissionServer.Entities.Multitenancy
 {
     /// <summary>
     /// Permission based off of a developer-designed underlying enum.
@@ -18,6 +18,6 @@ namespace PermissionServer.Entities
         public List<PSRolePermission<TPerm, TPermCat>> RolePermissions { get; set; }
         
         public Permission() { }
-        public Permission(TPerm pEnum) : base(pEnum) { }
+        public Permission(TPerm pEnum) : base(pEnum) {}
     }
 }

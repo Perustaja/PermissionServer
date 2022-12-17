@@ -4,18 +4,19 @@ namespace PermissionServer.Entities.Multitenancy
     /// Join table that acts as an access record.
     /// </summary>
     public class PSUserTenant<TPerm, TPermCat>
-        where TPerm : System.Enum
-        where TPermCat : System.Enum
+        where TPerm : Enum
+        where TPermCat : Enum
     {
-        public Guid UserId { get; private set; }
-        public Guid OrgId { get; private set; }
+        public Guid UserId { get; set; }
+        public Guid TenantId { get; set; }
         public PSUser<TPerm, TPermCat> User { get; set; }
         public PSTenant<TPerm, TPermCat> Tenant { get; set; }
+
         public PSUserTenant() { }
-        public PSUserTenant(Guid userId, Guid orgId)
+        public PSUserTenant(Guid userId, Guid tenantId)
         {
             UserId = userId;
-            OrgId = orgId;
+            TenantId = tenantId;
         }
     }
 }
