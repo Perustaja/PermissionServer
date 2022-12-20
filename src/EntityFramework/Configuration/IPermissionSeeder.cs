@@ -1,6 +1,6 @@
 using PermissionServer.Entities.Bases;
 
-namespace PermissionServer.EntityFramework.Configuration.Common
+namespace PermissionServer.EntityFramework.Configuration
 {
     /// <summary>
     /// Transforms underlying permission enum members into entities to be added to the database.

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace PermissionServer.EntityFramework.Configuration.Common
+namespace PermissionServer.EntityFramework.Configuration
 {
     internal class SeedHelpers
     {

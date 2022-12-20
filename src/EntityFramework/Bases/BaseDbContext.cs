@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PermissionServer.Entities.Bases;
-using PermissionServer.EntityFramework.Configuration.Common;
+using PermissionServer.EntityFramework.Configuration;
 
 namespace PermissionServer.EntityFramework.Bases
 {
@@ -27,7 +27,7 @@ namespace PermissionServer.EntityFramework.Bases
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            RegisterEntities(modelBuilder);
+            RegisterAndConfigureEntities(modelBuilder);
             SeedPermissionData(modelBuilder);
             SeedRoles(modelBuilder);
 
@@ -41,8 +41,10 @@ namespace PermissionServer.EntityFramework.Bases
             modelBuilder.Entity<TPermCatEntity>().HasData(_permSeeder.GetSeedPermissions());
         }
 
-        /// <summary>Responsible for adding entities into the model.</summary>
-        public abstract void RegisterEntities(ModelBuilder modelBuilder);
+        /// <summary>
+        /// Responsible for adding entities into the model and applying any configuration via fluent API.
+        /// </summary>
+        public abstract void RegisterAndConfigureEntities(ModelBuilder modelBuilder);
         /// <summary>Responsible for seeding any configured global roles into the database.</summary>
         public abstract void SeedRoles(ModelBuilder modelBuilder);
     }

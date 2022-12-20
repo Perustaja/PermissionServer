@@ -1,7 +1,7 @@
 using PermissionServer.Attributes;
 using PermissionServer.Entities.Bases;
 
-namespace PermissionServer.EntityFramework.Configuration.Common
+namespace PermissionServer.EntityFramework.Configuration
 {
     internal class DefaultPermissionSeeder<TPerm, TPermCat, TPermEntity> 
         : IPermissionSeeder<TPerm, TPermCat, TPermEntity>
