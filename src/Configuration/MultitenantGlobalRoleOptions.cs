@@ -2,7 +2,7 @@ using PermissionServer.Entities.Multitenancy;
 
 namespace PermissionServer.Configuration
 {
-    public class MultitenantGlobalRolesOptions<TPerm, TPermCat>
+    public class MultitenantGlobalRoleOptions<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {

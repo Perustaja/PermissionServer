@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
+using PermissionServer.Entities.Bases;
 
 namespace PermissionServer.Entities.Multitenancy
 {
@@ -7,17 +7,14 @@ namespace PermissionServer.Entities.Multitenancy
     /// Defines a group of permissions and some configuration values. A role may be specific to a tenant, 
     /// or may be global and shared as a non-removable default value across tenants.
     /// </summary>
-    public class PSRole<TPerm, TPermCat> : IdentityRole<Guid>
+    public class PSRole<TPerm, TPermCat> : BaseRole<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
         public Guid? TenantId { get; set; }
-        public string Description { get; set; }
         public bool IsGlobal { get; set; }
         /// <summary>Whether or not the role is the default for a new tenant owner.</summary>
         public bool IsGlobalAdminDefault { get; set; }
-        /// <summary>Whether or not the role is the default for a new user.</summary>
-        public bool IsGlobalDefaultForNewUsers { get; set; }
         /// <summary>
         /// Whether or not the role is the default for a new user for this tenant. Takes priority 
         /// over global.
@@ -33,12 +30,9 @@ namespace PermissionServer.Entities.Multitenancy
         /// <summary>
         /// Creates a new role specific to a tenant.
         /// </summary>
-        public PSRole(string name, string desc)
+        public PSRole(string name, string desc) : base(name, desc)
         {
-            Name = name;
-            NormalizedName = name.ToUpper();
             IsGlobal = false;
-            Description = desc;
             IsGlobalAdminDefault = false;
             IsGlobalDefaultForNewUsers = false;
             IsTenantDefaultForNewUsers = false;

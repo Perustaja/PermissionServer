@@ -31,7 +31,7 @@ namespace PermissionServer.Configuration
         /// <param name="oa">An action to configure the <see cref="GlobalRolesOptions{T,K}"/>.</param>
         /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
         public PermissionServerBuilder<TPerm, TPermCat> AddSeededRoles(
-            Action<GlobalRolesOptions<TPerm, TPermCat>> oa)
+            Action<GlobalRoleOptions<TPerm, TPermCat>> oa)
         {
             Services.Configure(oa);
             return this;

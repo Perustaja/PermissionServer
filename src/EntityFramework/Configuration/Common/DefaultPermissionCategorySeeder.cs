@@ -1,7 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PermissionServer.Attributes;
-using PermissionServer.Entities;
 using PermissionServer.Entities.Bases;
 
 namespace PermissionServer.EntityFramework.Configuration.Common

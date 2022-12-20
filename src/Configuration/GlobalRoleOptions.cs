@@ -2,7 +2,7 @@ using PermissionServer.Entities;
 
 namespace PermissionServer.Configuration
 {
-    public class GlobalRolesOptions<TPerm, TPermCat>
+    public class GlobalRoleOptions<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {

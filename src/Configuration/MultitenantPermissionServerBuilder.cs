@@ -33,7 +33,7 @@ namespace PermissionServer.Configuration
         /// <param name="oa">An action to configure the <see cref="MultitenantGlobalRolesOptions{T,K}"/>.</param>
         /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
         public MultitenantPermissionServerBuilder<TPerm, TPermCat> AddSeededGlobalRoles(
-            Action<MultitenantGlobalRolesOptions<TPerm, TPermCat>> oa)
+            Action<MultitenantGlobalRoleOptions<TPerm, TPermCat>> oa)
         {
             Services.Configure(oa);
             return this;

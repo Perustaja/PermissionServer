@@ -1,23 +1,17 @@
-using Microsoft.AspNetCore.Identity;
+using PermissionServer.Entities.Bases;
 
 namespace PermissionServer.Entities.Multitenancy
 {
     /// <summary>
-    /// Base entity for a user. 
+    /// Multitenant user entity.
     /// </summary>
-    public class PSUser<TPerm, TPermCat> : IdentityUser<Guid>
+    public class PSUser<TPerm, TPermCat> : BaseUser<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
         public List<PSUserTenant<TPerm, TPermCat>> UserTenants { get; set; }
         public List<PSUserTenantRole<TPerm, TPermCat>> UserTenantRoles { get; set; }
-        
+
         public PSUser() { }
-        public PSUser(string email)
-        {
-            Id = Guid.NewGuid();
-            UserName = email;
-            Email = email;
-        }
     }
 }

@@ -9,7 +9,7 @@ namespace PermissionServer.Configuration
         /// </summary>
         public static IServiceCollection AddGlobalRoles<TPerm, TPermCat>(
             this IServiceCollection sc,
-            Action<GlobalRolesOptions<TPerm, TPermCat>> config)
+            Action<GlobalRoleOptions<TPerm, TPermCat>> config)
             where TPerm : Enum
             where TPermCat : Enum
         {
