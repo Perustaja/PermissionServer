@@ -1,15 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
+using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Configuration
 {
     public static class IServiceCollectionExtensions
     {
-        /// <summary>Adds PermissionServer with the default, multi-tenant configuration.</summary>
-        /// <returns>A <see cref="MultitenantPermissionServerBuilder{T,K}"/> for configuring the authorization system.</returns>
-        public static MultitenantPermissionServerBuilder<TPerm, TPermCat> AddPermissionServerWithMultitenancy<TPerm, TPermCat>(
+        /// <summary>Adds PermissionServer with the default, multi-tenant configuration without gRPC.</summary>
+        /// <returns>A <see cref="PermissionServerBuilder{T,K}"/> for configuring the authorization system.</returns>
+        public static PermissionServerBuilder<TPerm, TPermCat> AddPermissionServer<TPerm, TPermCat>(
                 this IServiceCollection sc,
-                Action<MultitenantPermissionServerOptions<TPerm, TPermCat>> oa
-            )
+                Action<PermissionServerOptions<TPerm, TPermCat>> options)
             where TPerm : Enum
             where TPermCat : Enum
         {
@@ -17,8 +17,13 @@ namespace PermissionServer.Multitenancy.Configuration
                 throw new ArgumentNullException(nameof(sc));
 
             sc.AddOptions();
-            // register tenant provider middleware
-            var b = new MultitenantPermissionServerBuilder<TPerm, TPermCat>(sc, oa);
+            sc.Configure(options);
+            sc.AddScoped<IPermissionService<TPerm, TPermCat>, DefaultPermissionService<TPerm, TPermCat>>();
+            sc.AddScoped<ITenantManager<TPerm, TPermCat>, DefaultTenantManager<TPerm, TPermCat>>();
+            sc.AddScoped<IUserProvider, TokenSubjectUserProvider<TPerm, TPermCat>>();
+            sc.AddScoped<ITenantProvider, RouteDataTenantProvider<TPerm, TPermCat>>();
+
+            var b = new PermissionServerBuilder<TPerm, TPermCat>(sc);
             return b;
         }
     }

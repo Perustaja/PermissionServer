@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Authorization
 {
-    public abstract class BaseAuthorizeFilter
+    internal abstract class BaseAuthorizeFilter
     {
         protected readonly string[] _permissions;
         public BaseAuthorizeFilter(Enum[] permissions)
@@ -20,8 +18,8 @@ namespace PermissionServer.Multitenancy.Authorization
         protected ITenantProvider GetTenantProvider(HttpContext context)
             => GetService<ITenantProvider>(context);
 
-        protected ILogger<LocalAuthorizeFilter> GetLogger(HttpContext context)
-            => GetService<ILogger<LocalAuthorizeFilter>>(context);
+        protected ILogger<BaseAuthorizeFilter> GetLogger(HttpContext context)
+            => GetService<ILogger<BaseAuthorizeFilter>>(context);
 
         protected IUserProvider GetUserProvider(HttpContext context)
             => GetService<IUserProvider>(context);

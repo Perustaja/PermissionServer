@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace PermissionServer.Multitenancy.Authorization
 {
-    public class LocalAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
+    internal class LocalAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
     {
         public LocalAuthorizeFilter(Enum[] permissions) : base(permissions) { }
 

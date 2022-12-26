@@ -11,10 +11,10 @@ namespace PermissionServer.Multitenancy.Services
         where TPermCat : Enum
     {
         private readonly HttpContext _httpContext;
-        private readonly MultitenantPermissionServerOptions<TPerm, TPermCat> _psOptions;
+        private readonly PermissionServerOptions<TPerm, TPermCat> _psOptions;
 
         public TokenSubjectUserProvider(IHttpContextAccessor contextAccessor,
-            IOptions<MultitenantPermissionServerOptions<TPerm, TPermCat>> psOptions)
+            IOptions<PermissionServerOptions<TPerm, TPermCat>> psOptions)
         {
             _httpContext = contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
             _psOptions = psOptions.Value;

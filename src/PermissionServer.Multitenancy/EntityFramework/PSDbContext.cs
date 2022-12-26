@@ -13,11 +13,11 @@ namespace PermissionServer.Multitenancy.EntityFramework
         where TPerm : Enum
         where TPermCat : Enum
     {
-        private readonly MultitenantGlobalRoleOptions<TPerm, TPermCat> _globalRoleOptions;
-        private readonly MultitenantEntityOptions<TPerm, TPermCat> _entityOptions;
+        private readonly GlobalRoleOptions<TPerm, TPermCat> _globalRoleOptions;
+        private readonly EntityOptions<TPerm, TPermCat> _entityOptions;
         public PSDbContext(DbContextOptions<PSDbContext<TUser, TRole, TPerm, TPermCat>> options,
-            IOptions<MultitenantGlobalRoleOptions<TPerm, TPermCat>> globalRoleOptions,
-            IOptions<MultitenantEntityOptions<TPerm, TPermCat>> entityOptions,
+            IOptions<GlobalRoleOptions<TPerm, TPermCat>> globalRoleOptions,
+            IOptions<EntityOptions<TPerm, TPermCat>> entityOptions,
             IPermissionSeeder<TPerm, TPermCat, Permission<TPerm, TPermCat>> permSeeder,
             IPermissionCategorySeeder<TPerm, TPermCat, PermissionCategory<TPerm, TPermCat>> permCatSeeder)
             : base(options, permSeeder, permCatSeeder)

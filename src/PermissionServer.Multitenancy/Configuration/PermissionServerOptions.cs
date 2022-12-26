@@ -1,6 +1,6 @@
 namespace PermissionServer.Multitenancy.Configuration
 {
-    public class MultitenantPermissionServerOptions<TPerm, TPermCat>
+    public sealed class PermissionServerOptions<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {

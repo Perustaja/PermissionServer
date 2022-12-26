@@ -6,7 +6,7 @@ namespace PermissionServer.Multitenancy.Configuration
     /// Configures a single global role to be seeded into the database. Start WithBaseRole() then add 
     /// permissions and change configuration as desired.
     /// </summary>
-    public class MultitenantGlobalRoleBuilder<TPerm, TPermCat>
+    public sealed class GlobalRoleBuilder<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
@@ -14,28 +14,28 @@ namespace PermissionServer.Multitenancy.Configuration
         private HashSet<PSRolePermission<TPerm, TPermCat>> _rolePermissions;
         public PSRole<TPerm, TPermCat> BuildRole() => _role;
         public HashSet<PSRolePermission<TPerm, TPermCat>> BuildPermissions() => _rolePermissions;
-        public MultitenantGlobalRoleBuilder<TPerm, TPermCat> WithBaseRole(string name, string desc)
+        public GlobalRoleBuilder<TPerm, TPermCat> WithBaseRole(string name, string desc)
         {
             _rolePermissions = new HashSet<PSRolePermission<TPerm, TPermCat>>();
             _role = PSRole<TPerm, TPermCat>.SeededGlobalRole(name, desc); ;
             return this;
         }
 
-        public MultitenantGlobalRoleBuilder<TPerm, TPermCat> AsDefaultAdminRole()
+        public GlobalRoleBuilder<TPerm, TPermCat> AsDefaultAdminRole()
         {
             ensureBaseRoleCreated();
             _role.SetAsGlobalAdminRole();
             return this;
         }
 
-        public MultitenantGlobalRoleBuilder<TPerm, TPermCat> AsDefaultNewUserRole()
+        public GlobalRoleBuilder<TPerm, TPermCat> AsDefaultNewUserRole()
         {
             ensureBaseRoleCreated();
             _role.SetAsGlobalDefaultNewUserRole();
             return this;
         }
 
-        public MultitenantGlobalRoleBuilder<TPerm, TPermCat> GrantAllPermissions()
+        public GlobalRoleBuilder<TPerm, TPermCat> GrantAllPermissions()
         {
             ensureBaseRoleCreated();
             foreach (TPerm p in Enum.GetValues(typeof(TPerm)))
@@ -43,7 +43,7 @@ namespace PermissionServer.Multitenancy.Configuration
             return this;
         }
 
-        public MultitenantGlobalRoleBuilder<TPerm, TPermCat> GrantPermissions(params TPerm[] perms)
+        public GlobalRoleBuilder<TPerm, TPermCat> GrantPermissions(params TPerm[] perms)
         {
             ensureBaseRoleCreated();
             foreach (TPerm p in perms)
@@ -51,7 +51,7 @@ namespace PermissionServer.Multitenancy.Configuration
             return this;
         }
 
-        public MultitenantGlobalRoleBuilder<TPerm, TPermCat> GrantAllPermissionsExcept(params TPerm[] perms)
+        public GlobalRoleBuilder<TPerm, TPermCat> GrantAllPermissionsExcept(params TPerm[] perms)
         {
             ensureBaseRoleCreated();
             foreach (TPerm p in Enum.GetValues(typeof(TPerm)))

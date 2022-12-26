@@ -5,19 +5,19 @@ using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Authorization
 {
-    public class AuthorizationEvaluator<TPerm, TPermCat> : IAuthorizationEvaluator
+    internal class AuthorizationEvaluator<TPerm, TPermCat> : IAuthorizationEvaluator
         where TPerm : Enum
         where TPermCat : Enum
     {
         private readonly ILogger<AuthorizationEvaluator<TPerm, TPermCat>> _logger;
         private readonly ITenantManager<TPerm, TPermCat> _tenantManager;
         private readonly IPermissionService<TPerm, TPermCat> _permSvc;
-        private readonly MultitenantPermissionServerOptions<TPerm, TPermCat> _psOptions;
+        private readonly PermissionServerOptions<TPerm, TPermCat> _psOptions;
 
         public AuthorizationEvaluator(ILogger<AuthorizationEvaluator<TPerm, TPermCat>> logger,
             ITenantManager<TPerm, TPermCat> tenantManager,
             IPermissionService<TPerm, TPermCat> permSvc,
-            IOptions<MultitenantPermissionServerOptions<TPerm, TPermCat>> psOptions)
+            IOptions<PermissionServerOptions<TPerm, TPermCat>> psOptions)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _tenantManager = tenantManager ?? throw new ArgumentNullException(nameof(tenantManager));

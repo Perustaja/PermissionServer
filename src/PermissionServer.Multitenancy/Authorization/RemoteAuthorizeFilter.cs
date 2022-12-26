@@ -6,7 +6,7 @@ using Ps.Protobuf;
 
 namespace PermissionServer.Multitenancy.Authorization
 {
-    public class RemoteAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
+    internal sealed class RemoteAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
     {
         public RemoteAuthorizeFilter(Enum[] permissions) : base(permissions) { }
 

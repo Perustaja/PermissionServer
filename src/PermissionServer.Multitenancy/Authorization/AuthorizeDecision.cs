@@ -1,6 +1,6 @@
 namespace PermissionServer.Multitenancy.Authorization
 {
-    public class AuthorizeDecision
+    public sealed class AuthorizeDecision
     {
         public bool Allowed { get; set; }
         public AuthorizeFailureReason? FailureReason { get; set; }

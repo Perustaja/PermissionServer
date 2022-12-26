@@ -2,17 +2,17 @@ using PermissionServer.Multitenancy.Entities;
 
 namespace PermissionServer.Multitenancy.Configuration
 {
-    public class MultitenantGlobalRoleOptions<TPerm, TPermCat>
+    public sealed class GlobalRoleOptions<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
-        private List<MultitenantGlobalRoleBuilder<TPerm, TPermCat>> _builders 
-            = new List<MultitenantGlobalRoleBuilder<TPerm, TPermCat>>();
+        private List<GlobalRoleBuilder<TPerm, TPermCat>> _builders 
+            = new List<GlobalRoleBuilder<TPerm, TPermCat>>();
         public List<PSRole<TPerm, TPermCat>> Roles => _builders.Select(b => b.BuildRole()).ToList();
         public List<PSRolePermission<TPerm, TPermCat>> RolePermissions => _builders.SelectMany(b => b.BuildPermissions()).ToList();
-        public void AddGlobalRole(Action<MultitenantGlobalRoleBuilder<TPerm, TPermCat>> ba)
+        public void AddGlobalRole(Action<GlobalRoleBuilder<TPerm, TPermCat>> ba)
         {
-            var b = new MultitenantGlobalRoleBuilder<TPerm, TPermCat>();
+            var b = new GlobalRoleBuilder<TPerm, TPermCat>();
             ba?.Invoke(b);
             _builders.Add(b);
         }
