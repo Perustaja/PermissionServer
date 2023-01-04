@@ -1,21 +1,24 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PermissionServer.Multitenancy.Configuration;
+using PermissionServer.Multitenancy.Entities;
 using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Authorization
 {
-    internal class AuthorizationEvaluator<TPerm, TPermCat> : IAuthorizationEvaluator
+    internal class AuthorizationEvaluator<TTenant, TUserTenant, TPerm, TPermCat> : IAuthorizationEvaluator
+        where TTenant : PSTenant<TPerm, TPermCat>
+        where TUserTenant : PSUserTenant<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
-        private readonly ILogger<AuthorizationEvaluator<TPerm, TPermCat>> _logger;
-        private readonly ITenantManager<TPerm, TPermCat> _tenantManager;
+        private readonly ILogger<AuthorizationEvaluator<TTenant, TUserTenant, TPerm, TPermCat>> _logger;
+        private readonly ITenantManager<TTenant, TUserTenant, TPerm, TPermCat> _tenantManager;
         private readonly IPermissionService<TPerm, TPermCat> _permSvc;
         private readonly PermissionServerOptions<TPerm, TPermCat> _psOptions;
 
-        public AuthorizationEvaluator(ILogger<AuthorizationEvaluator<TPerm, TPermCat>> logger,
-            ITenantManager<TPerm, TPermCat> tenantManager,
+        public AuthorizationEvaluator(ILogger<AuthorizationEvaluator<TTenant, TUserTenant, TPerm, TPermCat>> logger,
+            ITenantManager<TTenant, TUserTenant, TPerm, TPermCat> tenantManager,
             IPermissionService<TPerm, TPermCat> permSvc,
             IOptions<PermissionServerOptions<TPerm, TPermCat>> psOptions)
         {

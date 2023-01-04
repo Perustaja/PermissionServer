@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using PermissionServer.Multitenancy.Authorization;
+using PermissionServer.Multitenancy.Services;
 using Ps.Protobuf;
 
 namespace PermissionServer.Multitenancy.Configuration
@@ -24,7 +26,7 @@ namespace PermissionServer.Multitenancy.Configuration
             bool isAuthority)
         {
             if (String.IsNullOrEmpty(remoteAddress))
-                throw new Exception("Remote address cannot be null.");
+                throw new ArgumentNullException("Remote address cannot be null or empty.");
 
             Services.AddGrpc();
             Services.AddSingleton<IAuthoritySettings>(new AuthoritySettings(isAuthority));
@@ -46,6 +48,26 @@ namespace PermissionServer.Multitenancy.Configuration
             return this;
         }
 
+        /// <summary>Adds Entity Framework with a default <see cref="Authorization.IAuthorizationEvaluator"/>.</summary>
+        /// <param name="options">An action to configure the <see cref="EntityFrameworkOptions{T,K}"/>.</param>
+        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddEntityFramework(
+            Action<EntityFrameworkOptions<TPerm, TPermCat>> options)
+        {
+            var efo = new EntityFrameworkOptions<TPerm, TPermCat>();
+            options?.Invoke(efo);
+            Services.Configure(options);
+
+            Services.AddScoped<IUserProvider, TokenSubjectUserProvider<TPerm, TPermCat>>();
+            Services.AddScoped<ITenantProvider, RouteDataTenantProvider<TPerm, TPermCat>>();
+
+            var customEval = typeof(AuthorizationEvaluator<,,,>)
+                .MakeGenericType(efo.TenantType, efo.UserTenantType, typeof(TPerm), typeof(TPermCat));
+
+            Services.AddScoped(typeof(IAuthorizationEvaluator), customEval);
+            return this;
+        }
+
         /// <summary>Adds global roles to be seeded into the database during migrations.</summary>
         /// <param name="options">An action to configure the <see cref="GlobalRolesOptions{T,K}"/>.</param>
         /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
@@ -56,10 +78,20 @@ namespace PermissionServer.Multitenancy.Configuration
             return this;
         }
 
-        public PermissionServerBuilder<TPerm, TPermCat> AddCustomEntities(
-            Action<EntityOptions<TPerm, TPermCat>> options)
+        /// <summary>Adds a custom evaluator that determines authorization decisions.</summary>
+        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddAuthorizationEvaluator<TEvaluator>()
+            where TEvaluator : class, IAuthorizationEvaluator
         {
-            Services.Configure(options);
+            var possibleDefault =
+                Services.FirstOrDefault(d => d.ServiceType == typeof(IAuthorizationEvaluator));
+            if (possibleDefault != default(ServiceDescriptor))
+            {
+                if (!Services.Remove(possibleDefault))
+                    throw new Exception("Attempted to remove default evaluator but unable to find it.");
+            }
+
+            Services.AddScoped<IAuthorizationEvaluator, TEvaluator>();
             return this;
         }
     }
