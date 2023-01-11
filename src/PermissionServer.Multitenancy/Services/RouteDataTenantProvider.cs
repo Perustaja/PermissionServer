@@ -6,15 +6,13 @@ using PermissionServer.Multitenancy.Exceptions;
 
 namespace PermissionServer.Multitenancy.Services
 {
-    public class RouteDataTenantProvider<TPerm, TPermCat> : ITenantProvider
-        where TPerm : Enum
-        where TPermCat : Enum
+    public class RouteDataTenantProvider : ITenantProvider
     {
         private readonly HttpContext _httpContext;
-        private readonly PermissionServerOptions<TPerm, TPermCat> _psOptions;
+        private readonly PermissionServerOptions _psOptions;
 
         public RouteDataTenantProvider(IHttpContextAccessor contextAccessor,
-            IOptions<PermissionServerOptions<TPerm, TPermCat>> psOptions)
+            IOptions<PermissionServerOptions> psOptions)
         {
             _httpContext = contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
             _psOptions = psOptions.Value;

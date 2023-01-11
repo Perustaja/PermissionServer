@@ -48,51 +48,41 @@ namespace PermissionServer.Multitenancy.Configuration
             return this;
         }
 
-        /// <summary>Adds Entity Framework with a default <see cref="Authorization.IAuthorizationEvaluator"/>.</summary>
-        /// <param name="options">An action to configure the <see cref="EntityFrameworkOptions{T,K}"/>.</param>
-        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
-        public PermissionServerBuilder<TPerm, TPermCat> AddEntityFramework(
-            Action<EntityFrameworkOptions<TPerm, TPermCat>> options)
-        {
-            var efo = new EntityFrameworkOptions<TPerm, TPermCat>();
-            options?.Invoke(efo);
-            Services.Configure(options);
-
-            Services.AddScoped<IUserProvider, TokenSubjectUserProvider<TPerm, TPermCat>>();
-            Services.AddScoped<ITenantProvider, RouteDataTenantProvider<TPerm, TPermCat>>();
-
-            var customEval = typeof(AuthorizationEvaluator<,,,>)
-                .MakeGenericType(efo.TenantType, efo.UserTenantType, typeof(TPerm), typeof(TPermCat));
-
-            Services.AddScoped(typeof(IAuthorizationEvaluator), customEval);
-            return this;
-        }
-
-        /// <summary>Adds global roles to be seeded into the database during migrations.</summary>
-        /// <param name="options">An action to configure the <see cref="GlobalRolesOptions{T,K}"/>.</param>
-        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
-        public PermissionServerBuilder<TPerm, TPermCat> AddSeededGlobalRoles(
-            Action<GlobalRoleOptions<TPerm, TPermCat>> options)
-        {
-            Services.Configure(options);
-            return this;
-        }
-
         /// <summary>Adds a custom evaluator that determines authorization decisions.</summary>
-        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        /// /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
         public PermissionServerBuilder<TPerm, TPermCat> AddAuthorizationEvaluator<TEvaluator>()
             where TEvaluator : class, IAuthorizationEvaluator
         {
-            var possibleDefault =
-                Services.FirstOrDefault(d => d.ServiceType == typeof(IAuthorizationEvaluator));
-            if (possibleDefault != default(ServiceDescriptor))
-            {
-                if (!Services.Remove(possibleDefault))
-                    throw new Exception("Attempted to remove default evaluator but unable to find it.");
-            }
-
             Services.AddScoped<IAuthorizationEvaluator, TEvaluator>();
             return this;
+        }
+
+        /// <summary>Adds a custom user provider that obtains the user for each request.</summary>
+        /// /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddUserProvider<TProvider>()
+            where TProvider : class, IUserProvider
+        {
+            RemovePossibleDefault<TProvider>();
+            Services.AddScoped<IUserProvider, TProvider>();
+            return this;
+        }
+
+        /// <summary>Adds a custom tenant provider that obtains the user for each request.</summary>
+        /// /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddTenantProvider<TProvider>()
+            where TProvider : class, ITenantProvider
+        {
+            RemovePossibleDefault<TProvider>();
+            Services.AddScoped<ITenantProvider, TProvider>();
+            return this;
+        }
+
+        private void RemovePossibleDefault<TInterface>()
+        {
+            var possibleDefault =
+                Services.FirstOrDefault(d => d.ServiceType == typeof(IUserProvider));
+            if (possibleDefault != default(ServiceDescriptor))
+                Services.Remove(possibleDefault);
         }
     }
 }

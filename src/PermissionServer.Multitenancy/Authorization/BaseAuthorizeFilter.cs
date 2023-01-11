@@ -1,16 +1,20 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PermissionServer.Multitenancy.Configuration;
+using PermissionServer.Multitenancy.Exceptions;
 using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Authorization
 {
     internal abstract class BaseAuthorizeFilter
     {
-        protected readonly string[] _permissions;
+        private readonly IEnumerable<Type> _enumTypes;
+        protected readonly string[] Permissions;
         public BaseAuthorizeFilter(Enum[] permissions)
         {
-            _permissions = permissions.Select(p => p.ToString()).ToArray<string>();
+            _enumTypes = permissions.Select(p => p.GetType());
+            Permissions = permissions.Select(p => p.ToString()).ToArray<string>();
         }
 
         // It seems like there is still no easy way to use DI with action filters in 6.0,
@@ -29,7 +33,15 @@ namespace PermissionServer.Multitenancy.Authorization
         {
             return context.RequestServices
                 .GetRequiredService(typeof(T))
-                as T;
+                as T 
+                ?? throw new Exception($"PermissionServer was unable to retrieve an instance of {typeof(T)} through DI.");
+        }
+
+        protected void ValidateUserProvidedEnum(Type registeredEnumType)
+        {
+            var possibleWrongEnum =_enumTypes.FirstOrDefault(t => t != registeredEnumType);
+            if (possibleWrongEnum != null)
+                throw new AttributeArgumentException(registeredEnumType, possibleWrongEnum);
         }
     }
 }

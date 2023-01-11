@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using PermissionServer.Multitenancy.Configuration;
 using Ps.Protobuf;
 
 namespace PermissionServer.Multitenancy.Authorization
@@ -12,6 +14,10 @@ namespace PermissionServer.Multitenancy.Authorization
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
+            var registeredEnumType 
+                = GetService<IOptions<PermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
+            ValidateUserProvidedEnum(registeredEnumType);
+            
             var logger = GetLogger(context.HttpContext);
 
             if (context.HttpContext.User?.Identity.IsAuthenticated == false)
@@ -31,8 +37,8 @@ namespace PermissionServer.Multitenancy.Authorization
                 TenantId = tenantId
             };
 
-            if (_permissions != null)
-                request.Perms.AddRange(_permissions);
+            if (Permissions != null)
+                request.Perms.AddRange(Permissions);
 
             logger.LogInformation("Authorization request to be sent via GRPC: {Request}", request);
             var reply = await client.AuthorizeAsync(request);
@@ -48,7 +54,7 @@ namespace PermissionServer.Multitenancy.Authorization
                 switch (reply.FailureReason)
                 {
                     case (failureReason.Permissionformat):
-                        logger.LogCritical("Identity server unable to parse permissions from attribute. {FailureMessage}, {Permissions}", reply.FailureMessage, _permissions);
+                        logger.LogCritical("Identity server unable to parse permissions from attribute. {FailureMessage}, {Permissions}", reply.FailureMessage, Permissions);
                         context.Result = new StatusCodeResult(StatusCodes.Status500InternalServerError);
                         break;
                     case (failureReason.Tenantnotfound):

@@ -2,13 +2,12 @@ namespace PermissionServer.Multitenancy.Configuration
 {
     internal interface IAuthoritySettings
     {
-        bool IsAuthority();
+        public bool IsAuthority { get; }
     }
 
     internal sealed class AuthoritySettings : IAuthoritySettings
     {
-        private bool _isAuthority;
-        public AuthoritySettings(bool isAuthority) => _isAuthority = isAuthority;
-        public bool IsAuthority() => _isAuthority;
+        public bool IsAuthority { get; }
+        public AuthoritySettings(bool isAuthority) => IsAuthority = isAuthority;
     }
 }

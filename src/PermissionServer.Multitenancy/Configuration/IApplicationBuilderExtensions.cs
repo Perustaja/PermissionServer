@@ -9,7 +9,7 @@ namespace PermissionServer.Multitenancy.Configuration
         {
             var authoritySettings = app
                 .ApplicationServices.GetService(typeof(IAuthoritySettings)) as IAuthoritySettings;
-            if (authoritySettings.IsAuthority())
+            if (authoritySettings.IsAuthority)
             {
                 app.UseEndpoints(e =>
                 {

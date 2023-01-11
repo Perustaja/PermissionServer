@@ -1,9 +1,9 @@
 namespace PermissionServer.Multitenancy.Configuration
 {
-    public sealed class PermissionServerOptions<TPerm, TPermCat>
-        where TPerm : Enum
-        where TPermCat : Enum
+    public sealed class PermissionServerOptions
     {
+        internal Type PermissionEnumType { get; set; }
+
         /// <summary>
         /// The route parameter key on your controller methods that contains the tenant id 
         /// for the current request. e.g. [HttpGet("tenants/{tenantId}/users")].
