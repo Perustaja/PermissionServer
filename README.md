@@ -1,0 +1,2 @@
+# PermissionServer
+Currently in pre-release only used for personal debugging. Currently evaluating what needs would be needed and how best to go about that. See https://github.com/Perustaja/PermissionServerDemo for an example.
