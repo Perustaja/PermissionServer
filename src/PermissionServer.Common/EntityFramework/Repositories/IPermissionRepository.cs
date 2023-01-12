@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PermissionServer.Multitenancy.Entities;
+using PermissionServer.Common.Entities;
 
-namespace PermissionServer.Multitenancy
+namespace PermissionServer.Common.Repositories
 {
     public interface IPermissionRepository<TPerm, TPermCat>
         where TPerm : Enum

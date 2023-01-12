@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using PermissionServer.Common.Services;
 using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Configuration
@@ -8,15 +9,15 @@ namespace PermissionServer.Multitenancy.Configuration
         /// <summary>Adds PermissionServer with the default, multi-tenant configuration without gRPC.</summary>
         /// <typeparam name="TPerm">The enum which represents your application's permissions.</typeparam>
         /// <returns>A <see cref="PermissionServerBuilder"/> for configuring the authorization system.</returns>
-        public static PermissionServerBuilder<TPerm, TPermCat> AddPermissionServer<TPerm, TPermCat>(this IServiceCollection sc,
-            Action<PermissionServerOptions> options)
+        public static MultitenantPermissionServerBuilder<TPerm, TPermCat> AddPermissionServer<TPerm, TPermCat>(this IServiceCollection sc,
+            Action<MultitenantPermissionServerOptions> options)
                 where TPerm : Enum
                 where TPermCat : Enum
         {
             if (sc == null)
                 throw new ArgumentNullException(nameof(sc));
 
-            var addTypes = new Action<PermissionServerOptions>(o => 
+            var addTypes = new Action<MultitenantPermissionServerOptions>(o => 
             {
                 o.PermissionEnumType = typeof(TPerm);
                 o.PermissionCategoryEnumType = typeof(TPermCat);
@@ -27,7 +28,7 @@ namespace PermissionServer.Multitenancy.Configuration
             sc.AddScoped<ITenantProvider, RouteDataTenantProvider>();
             sc.AddScoped<IUserProvider, TokenSubjectUserProvider>();
 
-            var b = new PermissionServerBuilder<TPerm, TPermCat>(sc);
+            var b = new MultitenantPermissionServerBuilder<TPerm, TPermCat>(sc);
             return b;
         }
     }

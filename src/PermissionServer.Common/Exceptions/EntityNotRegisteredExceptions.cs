@@ -1,4 +1,4 @@
-namespace PermissionServer.Multitenancy.Exceptions
+namespace PermissionServer.Common.Exceptions
 {
     public class EntitiesNotRegisteredException : InvalidOperationException
     {

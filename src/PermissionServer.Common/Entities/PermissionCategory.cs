@@ -1,18 +1,22 @@
-using PermissionServer.Common.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace PermissionServer.Multitenancy.Entities
+namespace PermissionServer.Common.Entities
 {
     /// <summary>
     /// Developer-designed category for grouping and displaying permissions to user.
     /// </summary>
     /// <typeparam name="TPerm">The underlying permission enum</typeparam>
     /// <typeparam name="TPermCat">The underlying permission category enum</typeparam>
-    public class PermissionCategory<TPerm, TPermCat> : BasePermissionCategory<TPerm, TPermCat>
+    public class PermissionCategory<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
+        [Key]
+        public string Id { get; set; }
+        public string Name { get; set; }
         public List<Permission<TPerm, TPermCat>> Permissions { get; set; }
+
         public PermissionCategory() { }
-        public PermissionCategory(TPermCat pcEnum) : base(pcEnum) { }
+        public PermissionCategory(TPermCat pcEnum) => Id = pcEnum.ToString();
     }
 }

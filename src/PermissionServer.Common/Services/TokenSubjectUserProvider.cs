@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using PermissionServer.Multitenancy.Configuration;
-using PermissionServer.Multitenancy.Exceptions;
+using PermissionServer.Common.Configuration;
+using PermissionServer.Common.Exceptions;
 
-namespace PermissionServer.Multitenancy.Services
+namespace PermissionServer.Common.Services
 {
     public class TokenSubjectUserProvider : IUserProvider
     {

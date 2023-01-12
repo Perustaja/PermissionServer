@@ -9,10 +9,10 @@ namespace PermissionServer.Multitenancy.Services
     public class RouteDataTenantProvider : ITenantProvider
     {
         private readonly HttpContext _httpContext;
-        private readonly PermissionServerOptions _psOptions;
+        private readonly MultitenantPermissionServerOptions _psOptions;
 
         public RouteDataTenantProvider(IHttpContextAccessor contextAccessor,
-            IOptions<PermissionServerOptions> psOptions)
+            IOptions<MultitenantPermissionServerOptions> psOptions)
         {
             _httpContext = contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
             _psOptions = psOptions.Value;

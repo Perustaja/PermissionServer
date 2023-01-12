@@ -1,4 +1,4 @@
-namespace PermissionServer.Multitenancy.Configuration
+namespace PermissionServer.Common.Configuration
 {
     internal interface IAuthoritySettings
     {

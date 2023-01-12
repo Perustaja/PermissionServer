@@ -2,22 +2,21 @@ using PermissionServer.Common.Entities;
 
 namespace PermissionServer.Common.EntityFramework
 {
-    public static class PermissionCategorySeeder<TPerm, TPermCat, TPermCatEntity>
+    public static class PermissionCategorySeeder<TPerm, TPermCat>
             where TPerm : Enum
             where TPermCat : Enum
-            where TPermCatEntity : BasePermissionCategory<TPerm, TPermCat>
     {
-        public static IEnumerable<TPermCatEntity> GetSeedPermissionCategories()
+        public static IEnumerable<PermissionCategory<TPerm, TPermCat>> GetSeedPermissionCategories()
         {
             // Note that there is a one-many relation modeled in EF core, so these categories can
             // have their permissions pulled out using the dbcontext and LINQ include just by the foreign key,
             // adding the permissions here is unnecessary
 
             // It should be impossible to get duplicate enum values here unless ToString() is overridden
-            var categoriesDict = new Dictionary<string, TPermCatEntity>();
+            var categoriesDict = new Dictionary<string, PermissionCategory<TPerm, TPermCat>>();
             foreach (TPermCat e in Enum.GetValues(typeof(TPermCat)))
             {
-                var pc = Activator.CreateInstance(typeof(TPermCatEntity), e) as TPermCatEntity;
+                var pc = new PermissionCategory<TPerm, TPermCat>();
                 var attribs = SeedHelpers.GetCustomAttributes(typeof(TPermCat), e.ToString());
 
                 var seedData = attribs.OfType<CategoryDataAttribute>().First();

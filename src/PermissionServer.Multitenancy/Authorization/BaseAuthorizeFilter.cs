@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PermissionServer.Multitenancy.Configuration;
-using PermissionServer.Multitenancy.Exceptions;
+using PermissionServer.Common.Exceptions;
+using PermissionServer.Common.Services;
 using PermissionServer.Multitenancy.Services;
 
 namespace PermissionServer.Multitenancy.Authorization

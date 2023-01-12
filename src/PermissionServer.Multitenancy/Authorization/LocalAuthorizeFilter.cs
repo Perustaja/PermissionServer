@@ -15,7 +15,7 @@ namespace PermissionServer.Multitenancy.Authorization
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var registeredEnumType 
-                = GetService<IOptions<PermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
+                = GetService<IOptions<MultitenantPermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
             ValidateUserProvidedEnum(registeredEnumType);
             
             var logger = GetLogger(context.HttpContext);

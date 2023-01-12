@@ -1,4 +1,4 @@
-namespace PermissionServer.Multitenancy.Services
+namespace PermissionServer.Common.Services
 {
     /// <summary>
     /// Provides access to the id of the current user for a request.

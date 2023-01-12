@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 
-namespace PermissionServer.Multitenancy.Exceptions
+namespace PermissionServer.Common.Exceptions
 {
     public class UserNotFoundException : Exception
     {
