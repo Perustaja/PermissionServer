@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PermissionServer.Multitenancy.Authorization;
+using PermissionServer.Multitenancy.Entities;
+using PermissionServer.Multitenancy.Exceptions;
 using PermissionServer.Multitenancy.Services;
 using Ps.Protobuf;
 
@@ -45,6 +48,29 @@ namespace PermissionServer.Multitenancy.Configuration
                 });
             }
 
+            return this;
+        }
+
+        /// <summary>
+        /// Adds Entity Framework to the application, with seeding of user-extendable permission and 
+        /// permission category entities.
+        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        /// </summary>
+        public PermissionServerBuilder<TPerm, TPermCat> AddEntityFrameworkStores<TContext>()
+            where TContext : DbContext
+        {
+            var context = Activator.CreateInstance<TContext>() as TContext;
+            var unregisteredEntityTypes = new List<Type>();
+            if (context.Model.FindEntityType(typeof(Permission<TPerm, TPermCat>)) == null)
+                unregisteredEntityTypes.Add(typeof(Permission<TPerm, TPermCat>));
+            if (context.Model.FindEntityType(typeof(PermissionCategory<TPerm, TPermCat>)) == null)
+                unregisteredEntityTypes.Add(typeof(PermissionCategory<TPerm, TPermCat>));
+
+            if (unregisteredEntityTypes.Count > 0)
+                throw new EntitiesNotRegisteredException(unregisteredEntityTypes.ToArray());
+
+            Services.AddDbContext<TContext>();
+            Services.AddScoped<IPermissionRepository<TPerm, TPermCat>, PermissionRepository<TPerm, TPermCat>>();
             return this;
         }
 

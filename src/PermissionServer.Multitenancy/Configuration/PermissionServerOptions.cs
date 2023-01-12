@@ -3,6 +3,7 @@ namespace PermissionServer.Multitenancy.Configuration
     public sealed class PermissionServerOptions
     {
         internal Type PermissionEnumType { get; set; }
+        internal Type PermissionCategoryEnumType { get; set; }
 
         /// <summary>
         /// The route parameter key on your controller methods that contains the tenant id 
