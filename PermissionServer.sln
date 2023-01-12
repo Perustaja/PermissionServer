@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{35F7C3F6-BE26-4120-989A-8118A965747B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer", "src\PermissionServer\PermissionServer.csproj", "{5FBC986D-79DC-4CA4-926B-2E758FC65F54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Singletenant", "src\PermissionServer.Singletenant\PermissionServer.Singletenant.csproj", "{5FBC986D-79DC-4CA4-926B-2E758FC65F54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Multitenancy", "src\PermissionServer.Multitenancy\PermissionServer.Multitenancy.csproj", "{A07D9E58-1736-49F6-A040-B60647E7070B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Multitenant", "src\PermissionServer.Multitenant\PermissionServer.Multitenant.csproj", "{A07D9E58-1736-49F6-A040-B60647E7070B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Common", "src\PermissionServer.Common\PermissionServer.Common.csproj", "{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6}"
 EndProject
