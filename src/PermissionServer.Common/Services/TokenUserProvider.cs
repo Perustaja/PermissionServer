@@ -6,12 +6,12 @@ using PermissionServer.Common.Exceptions;
 
 namespace PermissionServer.Common.Services
 {
-    public class TokenSubjectUserProvider : IUserProvider
+    public class TokenUserProvider : IUserProvider
     {
         private readonly HttpContext _httpContext;
         private readonly PermissionServerOptions _psOptions;
 
-        public TokenSubjectUserProvider(IHttpContextAccessor contextAccessor,
+        public TokenUserProvider(IHttpContextAccessor contextAccessor,
             IOptions<PermissionServerOptions> psOptions)
         {
             _httpContext = contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor.HttpContext));

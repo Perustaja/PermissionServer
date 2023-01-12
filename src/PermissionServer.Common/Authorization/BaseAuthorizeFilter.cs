@@ -3,9 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PermissionServer.Common.Exceptions;
 using PermissionServer.Common.Services;
-using PermissionServer.Multitenancy.Services;
 
-namespace PermissionServer.Multitenancy.Authorization
+namespace PermissionServer.Common.Authorization
 {
     internal abstract class BaseAuthorizeFilter
     {
@@ -19,9 +18,6 @@ namespace PermissionServer.Multitenancy.Authorization
 
         // It seems like there is still no easy way to use DI with action filters in 6.0,
         // figuring out how to do this in a more normal way would be nice but is low prio
-        protected ITenantProvider GetTenantProvider(HttpContext context)
-            => GetService<ITenantProvider>(context);
-
         protected ILogger<BaseAuthorizeFilter> GetLogger(HttpContext context)
             => GetService<ILogger<BaseAuthorizeFilter>>(context);
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace PermissionServer.Multitenancy.Exceptions
 {
-    public class TenantNotFoundException : Exception
+    public sealed class TenantNotFoundException : Exception
     {
         public readonly string _customMessage;
         public override string Message => _customMessage;

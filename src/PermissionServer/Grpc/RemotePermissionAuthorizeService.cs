@@ -1,7 +1,7 @@
 using Ps.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using PermissionServer.Multitenancy.Authorization;
+using PermissionServer.Authorization;
 
 namespace PermissionServer.Grpc
 {
@@ -22,8 +22,7 @@ namespace PermissionServer.Grpc
         public override async Task<GrpcAuthorizeDecision> Authorize(GrpcPermissionAuthorizeRequest request, ServerCallContext ctx)
         {
             _logger.LogInformation($"GRPC remote authorization request started. {request}");
-            var decision = await _authEvaluator.EvaluateAsync(request.UserId, request.TenantId, 
-                request.Perms.ToArray());
+            var decision = await _authEvaluator.EvaluateAsync(request.UserId, request.Perms.ToArray());
             
             var reply = new GrpcAuthorizeDecision()
             {
@@ -43,8 +42,6 @@ namespace PermissionServer.Grpc
             {
                 case (AuthorizeFailureReason.PermissionFormat):
                     return Ps.Protobuf.failureReason.Permissionformat;
-                case (AuthorizeFailureReason.TenantNotFound):
-                    return Ps.Protobuf.failureReason.Tenantnotfound;
                 case (AuthorizeFailureReason.Unauthorized):
                     return Ps.Protobuf.failureReason.Unauthorized;
                 default:

@@ -5,10 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PermissionServer.Common.Authorization;
-using PermissionServer.Multitenancy.Configuration;
-using PermissionServer.Multitenancy.Services;
+using PermissionServer.Common.Configuration;
 
-namespace PermissionServer.Multitenancy.Authorization
+namespace PermissionServer.Authorization
 {
     internal class LocalAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
     {
@@ -17,7 +16,7 @@ namespace PermissionServer.Multitenancy.Authorization
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var registeredEnumType 
-                = GetService<IOptions<MultitenantPermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
+                = GetService<IOptions<PermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
             ValidateUserProvidedEnum(registeredEnumType);
             
             var logger = GetLogger(context.HttpContext);
@@ -33,11 +32,10 @@ namespace PermissionServer.Multitenancy.Authorization
             var evaulator = context.HttpContext.RequestServices
                 .GetRequiredService(typeof(IAuthorizationEvaluator))
                 as IAuthorizationEvaluator ?? throw new Exception("PermissionServer was unable to retrieve an instance of IAuthorizationFilter through DI. Ensure that if this is the authority, AddAuthorizationEvaluator() is called wherever you configure your services.");
-            var tenantId = GetService<ITenantProvider>(context.HttpContext).GetCurrentRequestTenant().ToString();
             var userId = GetUserProvider(context.HttpContext).GetCurrentRequestUser().ToString();
 
-            logger.LogInformation("Authorizing local request: {UserId}, {TenantId}, {Permissions}", userId, tenantId, Permissions);
-            var decision = await evaulator.EvaluateAsync(userId, tenantId, Permissions);
+            logger.LogInformation("Authorizing local request: {UserId}, {Permissions}", userId, Permissions);
+            var decision = await evaulator.EvaluateAsync(userId, Permissions);
             SetContextResultOnDecision(context, decision);
         }
 
@@ -53,8 +51,6 @@ namespace PermissionServer.Multitenancy.Authorization
                         logger.LogCritical($"Unable to parse permissions from local attribute. {decision.FailureMessage}, {Permissions}");
                         context.Result = new StatusCodeResult(StatusCodes.Status500InternalServerError);
                         break;
-                    case (AuthorizeFailureReason.TenantNotFound):
-                        context.Result = new NotFoundResult(); break;
                     default:
                         context.Result = new ForbidResult(); break;
                 }

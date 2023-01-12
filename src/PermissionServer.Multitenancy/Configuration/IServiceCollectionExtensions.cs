@@ -26,7 +26,7 @@ namespace PermissionServer.Multitenancy.Configuration
             sc.AddOptions();
             sc.Configure(options + addTypes);
             sc.AddScoped<ITenantProvider, RouteDataTenantProvider>();
-            sc.AddScoped<IUserProvider, TokenSubjectUserProvider>();
+            sc.AddScoped<IUserProvider, TokenUserProvider>();
 
             var b = new MultitenantPermissionServerBuilder<TPerm, TPermCat>(sc);
             return b;

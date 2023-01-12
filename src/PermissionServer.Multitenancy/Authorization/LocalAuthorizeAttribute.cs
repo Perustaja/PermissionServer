@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace PermissionServer.Multitenancy.Authorization
 {
     /// <summary>
-    /// Marks this method or class as requiring local authorization (i.e. user and permissions are stored
-    /// locally within this project). 
+    /// Marks this method or class as requiring local authorization (i.e. user, tenant, and permissions 
+    /// are stored locally within this project). 
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class LocalAuthorizeAttribute : TypeFilterAttribute
