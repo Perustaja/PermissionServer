@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using PermissionServer.Common.Configuration;
-using PermissionServer.Grpc;
+using PermissionServer.Multitenant.Grpc;
 
 namespace PermissionServer.Multitenant.Configuration
 {

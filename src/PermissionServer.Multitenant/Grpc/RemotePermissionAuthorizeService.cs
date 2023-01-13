@@ -3,7 +3,7 @@ using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using PermissionServer.Multitenant.Authorization;
 
-namespace PermissionServer.Grpc
+namespace PermissionServer.Multitenant.Grpc
 {
     public sealed class RemotePermissionAuthorizeService : GrpcPermissionAuthorize.GrpcPermissionAuthorizeBase
     {
