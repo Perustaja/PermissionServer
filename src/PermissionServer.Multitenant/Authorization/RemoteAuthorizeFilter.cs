@@ -10,9 +10,10 @@ using Ps.Protobuf;
 
 namespace PermissionServer.Multitenant.Authorization
 {
-    internal sealed class RemoteAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
+    internal sealed class RemoteAuthorizeFilter<TPerm> : BaseAuthorizeFilter<TPerm>, IAsyncAuthorizationFilter
+        where TPerm : Enum
     {
-        public RemoteAuthorizeFilter(Enum[] permissions) : base(permissions) { }
+        public RemoteAuthorizeFilter(TPerm[] permissions) : base(permissions) { }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {

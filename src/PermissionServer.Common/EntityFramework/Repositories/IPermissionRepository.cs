@@ -3,7 +3,8 @@ using PermissionServer.Common.Entities;
 
 namespace PermissionServer.Common.Repositories
 {
-    public interface IPermissionRepository<TPerm, TPermCat>
+    public interface IPermissionRepository<TContext, TPerm, TPermCat>
+        where TContext : DbContext
         where TPerm : Enum
         where TPermCat : Enum
     {
@@ -11,13 +12,14 @@ namespace PermissionServer.Common.Repositories
         Task<List<PermissionCategory<TPerm, TPermCat>>> GetAllPermissionCategoriesAsync();
     }
 
-    public class PermissionRepository<TPerm, TPermCat> : IPermissionRepository<TPerm, TPermCat>
+    public class PermissionRepository<TContext, TPerm, TPermCat> : IPermissionRepository<TContext, TPerm, TPermCat>
+        where TContext : DbContext
         where TPerm : Enum
         where TPermCat : Enum
     {
-        private readonly DbContext _context;
+        private readonly TContext _context;
 
-        public PermissionRepository(DbContext context)
+        public PermissionRepository(TContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

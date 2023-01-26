@@ -6,20 +6,19 @@ using PermissionServer.Common.Services;
 
 namespace PermissionServer.Common.Authorization
 {
-    internal abstract class BaseAuthorizeFilter
+    internal abstract class BaseAuthorizeFilter<TPerm>
+        where TPerm : Enum
     {
-        private readonly IEnumerable<Type> _enumTypes;
         protected readonly string[] Permissions;
-        public BaseAuthorizeFilter(Enum[] permissions)
+        public BaseAuthorizeFilter(TPerm[] permissions)
         {
-            _enumTypes = permissions.Select(p => p.GetType());
             Permissions = permissions.Select(p => p.ToString()).ToArray<string>();
         }
 
         // It seems like there is still no easy way to use DI with action filters in 6.0,
         // figuring out how to do this in a more normal way would be nice but is low prio
-        protected ILogger<BaseAuthorizeFilter> GetLogger(HttpContext context)
-            => GetService<ILogger<BaseAuthorizeFilter>>(context);
+        protected ILogger<BaseAuthorizeFilter<TPerm>> GetLogger(HttpContext context)
+            => GetService<ILogger<BaseAuthorizeFilter<TPerm>>>(context);
 
         protected IUserProvider GetUserProvider(HttpContext context)
             => GetService<IUserProvider>(context);
@@ -35,9 +34,8 @@ namespace PermissionServer.Common.Authorization
 
         protected void ValidateUserProvidedEnum(Type registeredEnumType)
         {
-            var possibleWrongEnum =_enumTypes.FirstOrDefault(t => t != registeredEnumType);
-            if (possibleWrongEnum != null)
-                throw new AttributeArgumentException(registeredEnumType, possibleWrongEnum);
+            if (registeredEnumType != typeof(TPerm))
+                throw new AttributeArgumentException(registeredEnumType, typeof(TPerm));
         }
     }
 }

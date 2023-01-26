@@ -10,9 +10,10 @@ using PermissionServer.Multitenant.Services;
 
 namespace PermissionServer.Multitenant.Authorization
 {
-    internal class LocalAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
+    internal class LocalAuthorizeFilter<TPerm> : BaseAuthorizeFilter<TPerm>, IAsyncAuthorizationFilter
+        where TPerm : Enum
     {
-        public LocalAuthorizeFilter(Enum[] permissions) : base(permissions) { }
+        public LocalAuthorizeFilter(TPerm[] permissions) : base(permissions) { }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {

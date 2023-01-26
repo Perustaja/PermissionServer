@@ -15,7 +15,7 @@ namespace PermissionServer.Common.EntityFramework
                 var p = new Permission<TPerm, TPermCat>();
                 var attribs = SeedHelpers.GetCustomAttributes(typeof(TPerm), e.ToString());
 
-                var seedData = attribs.OfType<PermissionDataAttribute>().First();
+                var seedData = attribs.OfType<PermissionDataAttribute<TPermCat>>().First();
                 p.Name = seedData?.Name ?? p.Id;
                 p.Description = seedData?.Description ?? String.Empty;
                 p.PermCategoryId = seedData?.PermissionCategory?.ToString() ?? String.Empty;

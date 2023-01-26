@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PermissionServer.Common.Configuration;
+using PermissionServer.Common.Repositories;
+using PermissionServer.Common.Services;
 using PermissionServer.Multitenant.Authorization;
 using PermissionServer.Multitenant.Services;
 using Ps.Protobuf;
@@ -10,9 +13,7 @@ namespace PermissionServer.Multitenant.Configuration
         where TPerm : Enum
         where TPermCat : Enum
     {
-        private IServiceCollection Services { get; }
-        public MultitenantPermissionServerBuilder(IServiceCollection services)
-        : base(services) { }
+        public MultitenantPermissionServerBuilder(IServiceCollection services) : base(services) { }
 
         /// <summary>Adds remote authorization to the application.</summary>
         /// <param name="isAuthority">Whether this is the server that will evaluate authorization decisions.</param>
@@ -44,6 +45,29 @@ namespace PermissionServer.Multitenant.Configuration
                 });
             }
 
+            return this;
+        }
+
+        /// <summary>
+        /// Adds Entity Framework to the application, with seeding of user-extendable permission and 
+        /// permission category entities.
+        /// </summary>
+        /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddEntityFrameworkStores<TContext>()
+            where TContext : DbContext
+        {
+            Services.AddDbContext<TContext>();
+            Services.AddScoped<IPermissionRepository<TContext, TPerm, TPermCat>, PermissionRepository<TContext, TPerm, TPermCat>>();
+            return this;
+        }
+
+        /// <summary>Adds a custom user provider that obtains the user for each request.</summary>
+        /// /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
+        public MultitenantPermissionServerBuilder<TPerm, TPermCat> AddUserProvider<TProvider>()
+            where TProvider : class, IUserProvider
+        {
+            RemovePossibleDefault<TProvider>();
+            Services.AddScoped<IUserProvider, TProvider>();
             return this;
         }
 

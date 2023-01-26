@@ -3,8 +3,10 @@ namespace PermissionServer.Common.EntityFramework
     /// <summary>
     /// Allows customization of the underlying permission with extra data to be added to the database.
     /// </summary>
+    /// <typeparam name="TPermCat">The category enum associated with your permissions.</typeparam>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class PermissionDataAttribute : Attribute
+    public class PermissionDataAttribute<TPermCat> : Attribute
+        where TPermCat : Enum
     {
         /// <summary>The formatted name of the permission to be displayed to end-users.</summary>
         public string Name { get; set; }
@@ -29,7 +31,7 @@ namespace PermissionServer.Common.EntityFramework
         /// <param name="description">
         /// The formatted description of the permission to be displayed to end-users.
         /// </param>
-        public PermissionDataAttribute(Enum category, string name = "",
+        public PermissionDataAttribute(TPermCat category, string name = "",
             string description = "")
         {
             Name = name;
