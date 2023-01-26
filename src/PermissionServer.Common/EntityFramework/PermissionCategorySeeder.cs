@@ -16,7 +16,7 @@ namespace PermissionServer.Common.EntityFramework
             var categoriesDict = new Dictionary<string, PermissionCategory<TPerm, TPermCat>>();
             foreach (TPermCat e in Enum.GetValues(typeof(TPermCat)))
             {
-                var pc = new PermissionCategory<TPerm, TPermCat>();
+                var pc = new PermissionCategory<TPerm, TPermCat>(e);
                 var attribs = SeedHelpers.GetCustomAttributes(typeof(TPermCat), e.ToString());
 
                 var seedData = attribs.OfType<CategoryDataAttribute>().First();

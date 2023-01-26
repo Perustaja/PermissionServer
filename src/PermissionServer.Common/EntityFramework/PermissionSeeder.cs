@@ -12,7 +12,7 @@ namespace PermissionServer.Common.EntityFramework
             var permsDict = new Dictionary<string, Permission<TPerm, TPermCat>>();
             foreach (TPerm e in Enum.GetValues(typeof(TPerm)))
             {
-                var p = new Permission<TPerm, TPermCat>();
+                var p = new Permission<TPerm, TPermCat>(e);
                 var attribs = SeedHelpers.GetCustomAttributes(typeof(TPerm), e.ToString());
 
                 var seedData = attribs.OfType<PermissionDataAttribute<TPermCat>>().First();

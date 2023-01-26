@@ -18,7 +18,7 @@
   
   <PropertyGroup>
     <PackageId>PermissionServer.Common</PackageId>
-    <Version>0.1.5</Version>
+    <Version>0.1.6</Version>
     <Authors>Perustaja</Authors>
     <RepositoryUrl>https://github.com/Perustaja/PermissionServer</RepositoryUrl>
   </PropertyGroup>

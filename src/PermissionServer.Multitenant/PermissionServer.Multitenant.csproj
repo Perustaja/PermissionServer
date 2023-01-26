@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <PackageId>PermissionServer.Multitenant</PackageId>
-    <Version>0.1.7</Version>
+    <Version>0.1.8</Version>
     <Authors>Perustaja</Authors>
     <RepositoryUrl>https://github.com/Perustaja/PermissionServer</RepositoryUrl>
   </PropertyGroup>
