@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace PermissionServer.Multitenant.Authorization
+namespace PermissionServer.Authorization
 {
     /// <summary>
     /// Marks this method or class as requiring remote authorization.
@@ -11,7 +11,7 @@ namespace PermissionServer.Multitenant.Authorization
         where TPerm : Enum
     {
         /// <param name="permissions">An optional collection of permissions required.</param>
-        public RemoteAuthorizeAttribute(params TPerm[] permissions) : base(typeof(RemoteAuthorizeAttribute<TPerm>))
+        public RemoteAuthorizeAttribute(params TPerm[] permissions) : base(typeof(RemoteAuthorizeFilter<TPerm>))
             => Arguments = new object[] { permissions };
     }
 }

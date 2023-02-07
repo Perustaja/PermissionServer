@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace PermissionServer.Multitenant.Authorization
+namespace PermissionServer.Authorization
 {
     /// <summary>
     /// Marks this method or class as requiring local authorization (i.e. user, tenant, and permissions 

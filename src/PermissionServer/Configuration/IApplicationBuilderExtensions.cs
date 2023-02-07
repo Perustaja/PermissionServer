@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using PermissionServer.Common.Configuration;
-using PermissionServer.Multitenant.Grpc;
+using PermissionServer.Grpc;
 
-namespace PermissionServer.Multitenant.Configuration
+namespace PermissionServer.Configuration
 {
     public static class IApplicationBuilderExtensions
     {

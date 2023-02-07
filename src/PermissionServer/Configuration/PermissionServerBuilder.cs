@@ -3,17 +3,22 @@ using Microsoft.Extensions.DependencyInjection;
 using PermissionServer.Common.Configuration;
 using PermissionServer.Common.Repositories;
 using PermissionServer.Common.Services;
-using PermissionServer.Multitenant.Authorization;
-using PermissionServer.Multitenant.Services;
+using PermissionServer.Authorization;
+using PermissionServer.Services;
 using Ps.Protobuf;
 
-namespace PermissionServer.Multitenant.Configuration
+namespace PermissionServer.Configuration
 {
-    public sealed class MultitenantPermissionServerBuilder<TPerm, TPermCat> : PermissionServerBuilder<TPerm, TPermCat>
+    public sealed class PermissionServerBuilder<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum
     {
-        public MultitenantPermissionServerBuilder(IServiceCollection services) : base(services) { }
+        private IServiceCollection _services;
+
+        public PermissionServerBuilder(IServiceCollection services)
+        { 
+            _services = services;
+        }
 
         /// <summary>Adds remote authorization to the application.</summary>
         /// <param name="isAuthority">Whether this is the server that will evaluate authorization decisions.</param>
@@ -21,25 +26,25 @@ namespace PermissionServer.Multitenant.Configuration
         /// The url of the remote server, e.g. "https://localhost:5000", If this is the authority,
         /// put in the url of the client and vice-versa.
         /// </param>
-        /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
-        public MultitenantPermissionServerBuilder<TPerm, TPermCat> AddRemoteAuthorization(string remoteAddress,
+        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddRemoteAuthorization(string remoteAddress,
             bool isAuthority)
         {
             if (String.IsNullOrEmpty(remoteAddress))
                 throw new ArgumentNullException("Remote address cannot be null or empty.");
 
-            Services.AddGrpc();
-            Services.AddSingleton<IAuthoritySettings>(new AuthoritySettings(isAuthority));
+            _services.AddGrpc();
+            _services.AddSingleton<IAuthoritySettings>(new AuthoritySettings(isAuthority));
             if (isAuthority)
             {
-                Services.AddGrpcClient<GrpcPermissionAuthorize.GrpcPermissionAuthorizeBase>(o =>
+                _services.AddGrpcClient<GrpcPermissionAuthorize.GrpcPermissionAuthorizeBase>(o =>
                 {
                     o.Address = new Uri(remoteAddress);
                 });
             }
             else
             {
-                Services.AddGrpcClient<GrpcPermissionAuthorize.GrpcPermissionAuthorizeClient>(o =>
+                _services.AddGrpcClient<GrpcPermissionAuthorize.GrpcPermissionAuthorizeClient>(o =>
                 {
                     o.Address = new Uri(remoteAddress);
                 });
@@ -52,42 +57,50 @@ namespace PermissionServer.Multitenant.Configuration
         /// Adds Entity Framework to the application, with seeding of user-extendable permission and 
         /// permission category entities.
         /// </summary>
-        /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
+        /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
         public PermissionServerBuilder<TPerm, TPermCat> AddEntityFrameworkStores<TContext>()
             where TContext : DbContext
         {
-            Services.AddDbContext<TContext>();
-            Services.AddScoped<IPermissionRepository<TContext, TPerm, TPermCat>, PermissionRepository<TContext, TPerm, TPermCat>>();
+            _services.AddDbContext<TContext>();
+            _services.AddScoped<IPermissionRepository<TContext, TPerm, TPermCat>, PermissionRepository<TContext, TPerm, TPermCat>>();
             return this;
         }
 
         /// <summary>Adds a custom user provider that obtains the user for each request.</summary>
-        /// /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
-        public MultitenantPermissionServerBuilder<TPerm, TPermCat> AddUserProvider<TProvider>()
+        /// /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddUserProvider<TProvider>()
             where TProvider : class, IUserProvider
         {
             RemovePossibleDefault<TProvider>();
-            Services.AddScoped<IUserProvider, TProvider>();
+            _services.AddScoped<IUserProvider, TProvider>();
             return this;
         }
 
         /// <summary>Adds a custom evaluator that determines authorization decisions.</summary>
-        /// /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
-        public MultitenantPermissionServerBuilder<TPerm, TPermCat> AddAuthorizationEvaluator<TEvaluator>()
+        /// /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddAuthorizationEvaluator<TEvaluator>()
             where TEvaluator : class, IAuthorizationEvaluator
         {
-            Services.AddScoped<IAuthorizationEvaluator, TEvaluator>();
+            _services.AddScoped<IAuthorizationEvaluator, TEvaluator>();
             return this;
         }
 
         /// <summary>Adds a custom tenant provider that obtains the user for each request.</summary>
-        /// /// <returns>The current <see cref="MultitenantPermissionServerBuilder{T,K}"/> instance.</returns>
-        public MultitenantPermissionServerBuilder<TPerm, TPermCat> AddTenantProvider<TProvider>()
+        /// /// <returns>The current <see cref="PermissionServerBuilder{T,K}"/> instance.</returns>
+        public PermissionServerBuilder<TPerm, TPermCat> AddTenantProvider<TProvider>()
             where TProvider : class, ITenantProvider
         {
             RemovePossibleDefault<TProvider>();
-            Services.AddScoped<ITenantProvider, TProvider>();
+            _services.AddScoped<ITenantProvider, TProvider>();
             return this;
+        }
+
+        private void RemovePossibleDefault<TInterface>()
+        {
+            var possibleDefault =
+                _services.FirstOrDefault(d => d.ServiceType == typeof(IUserProvider));
+            if (possibleDefault != default(ServiceDescriptor))
+                _services.Remove(possibleDefault);
         }
     }
 }

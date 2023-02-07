@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PermissionServer.Common.Authorization;
-using PermissionServer.Common.Configuration;
+using PermissionServer.Singletenant.Configuration;
 using Ps.Protobuf;
 
 namespace PermissionServer.Singletenant.Authorization
 {
-    internal sealed class RemoteAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
+    internal sealed class RemoteAuthorizeFilter<TPerm> : BaseAuthorizeFilter<TPerm>, IAsyncAuthorizationFilter
+        where TPerm : Enum
     {
-        public RemoteAuthorizeFilter(Enum[] permissions) : base(permissions) { }
+        public RemoteAuthorizeFilter(TPerm[] permissions) : base(permissions) { }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
@@ -31,10 +32,13 @@ namespace PermissionServer.Singletenant.Authorization
             var client = GetService<GrpcPermissionAuthorize.GrpcPermissionAuthorizeClient>(context.HttpContext);
             var userId = GetUserProvider(context.HttpContext).GetCurrentRequestUser().ToString();
 
-            var request = new GrpcPermissionAuthorizeRequest() { UserId = userId };
+            var request = new GrpcPermissionAuthorizeRequest()
+            {
+                UserId = userId,
+            };
 
             if (Permissions != null)
-                request.Perms.AddRange(Permissions);
+                request.Permissions.AddRange(Permissions);
 
             logger.LogInformation("Authorization request to be sent via GRPC: {Request}", request);
             var reply = await client.AuthorizeAsync(request);

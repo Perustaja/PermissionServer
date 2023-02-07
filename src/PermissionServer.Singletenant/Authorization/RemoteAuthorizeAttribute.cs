@@ -5,11 +5,13 @@ namespace PermissionServer.Singletenant.Authorization
     /// <summary>
     /// Marks this method or class as requiring remote authorization.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method|AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class RemoteAuthorizeAttribute : TypeFilterAttribute
+    /// <typeparam name="TPerm">The permission enum used when registering PermissionServer.</typeparam>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class RemoteAuthorizeAttribute<TPerm> : TypeFilterAttribute
+        where TPerm : Enum
     {
-        /// <param name="permissions">A collection of permissions required.</param>
-        public RemoteAuthorizeAttribute(Enum[] permissions) : base(typeof(RemoteAuthorizeAttribute))
+        /// <param name="permissions">An optional collection of permissions required.</param>
+        public RemoteAuthorizeAttribute(params TPerm[] permissions) : base(typeof(RemoteAuthorizeFilter<TPerm>))
             => Arguments = new object[] { permissions };
     }
 }

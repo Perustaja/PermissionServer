@@ -17,7 +17,7 @@ enum failureReason {
 
 message GrpcPermissionAuthorizeRequest {
     string userId = 1;
-    repeated google.protobuf.StringValue perms = 3; // Collection of strings representing permissions
+    repeated google.protobuf.StringValue permissions = 3; // Collection of strings representing permissions
 }
 
 /*

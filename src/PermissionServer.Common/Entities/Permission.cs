@@ -8,6 +8,7 @@ namespace PermissionServer.Common.Entities
     /// </summary>
     /// <typeparam name="TPerm">The underlying permission enum</typeparam>
     /// <typeparam name="TPermCat">The underlying permission category enum</typeparam>
+    [Table("Permissions")]
     public class Permission<TPerm, TPermCat> 
         where TPerm : Enum
         where TPermCat : Enum

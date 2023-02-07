@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PermissionServer.Common.Entities
 {
@@ -7,6 +8,7 @@ namespace PermissionServer.Common.Entities
     /// </summary>
     /// <typeparam name="TPerm">The underlying permission enum</typeparam>
     /// <typeparam name="TPermCat">The underlying permission category enum</typeparam>
+    [Table("PermissionCategories")]
     public class PermissionCategory<TPerm, TPermCat>
         where TPerm : Enum
         where TPermCat : Enum

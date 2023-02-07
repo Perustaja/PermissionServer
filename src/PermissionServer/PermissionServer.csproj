@@ -14,10 +14,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>PermissionServer.Multitenant</PackageId>
-    <Version>0.1.8</Version>
+    <PackageId>PermissionServer</PackageId>
+    <Version>0.0.1</Version>
     <Authors>Perustaja</Authors>
+    <Description>Library that streamlines permission-based authorization in multi-tenant JWT-based applications.</Description>
     <RepositoryUrl>https://github.com/Perustaja/PermissionServer</RepositoryUrl>
+    <PackageReleaseNotes>Initial release testing.</PackageReleaseNotes>
+    <PackageTags>authorization,permissions,permissionserver</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

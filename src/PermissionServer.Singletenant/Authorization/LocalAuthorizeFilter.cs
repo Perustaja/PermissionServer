@@ -5,13 +5,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PermissionServer.Common.Authorization;
-using PermissionServer.Common.Configuration;
+using PermissionServer.Singletenant.Configuration;
 
 namespace PermissionServer.Singletenant.Authorization
 {
-    internal class LocalAuthorizeFilter : BaseAuthorizeFilter, IAsyncAuthorizationFilter
+    internal class LocalAuthorizeFilter<TPerm> : BaseAuthorizeFilter<TPerm>, IAsyncAuthorizationFilter
+        where TPerm : Enum
     {
-        public LocalAuthorizeFilter(Enum[] permissions) : base(permissions) { }
+        public LocalAuthorizeFilter(TPerm[] permissions) : base(permissions) { }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {

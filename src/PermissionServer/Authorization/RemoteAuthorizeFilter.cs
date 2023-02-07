@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PermissionServer.Common.Authorization;
-using PermissionServer.Multitenant.Configuration;
-using PermissionServer.Multitenant.Services;
+using PermissionServer.Configuration;
+using PermissionServer.Services;
 using Ps.Protobuf;
 
-namespace PermissionServer.Multitenant.Authorization
+namespace PermissionServer.Authorization
 {
     internal sealed class RemoteAuthorizeFilter<TPerm> : BaseAuthorizeFilter<TPerm>, IAsyncAuthorizationFilter
         where TPerm : Enum
@@ -18,7 +18,7 @@ namespace PermissionServer.Multitenant.Authorization
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var registeredEnumType 
-                = GetService<IOptions<MultitenantPermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
+                = GetService<IOptions<PermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
             ValidateUserProvidedEnum(registeredEnumType);
             
             var logger = GetLogger(context.HttpContext);
@@ -41,7 +41,7 @@ namespace PermissionServer.Multitenant.Authorization
             };
 
             if (Permissions != null)
-                request.Perms.AddRange(Permissions);
+                request.Permissions.AddRange(Permissions);
 
             logger.LogInformation("Authorization request to be sent via GRPC: {Request}", request);
             var reply = await client.AuthorizeAsync(request);

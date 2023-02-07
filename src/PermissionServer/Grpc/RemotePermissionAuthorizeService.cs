@@ -1,9 +1,9 @@
 using Ps.Protobuf;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using PermissionServer.Multitenant.Authorization;
+using PermissionServer.Authorization;
 
-namespace PermissionServer.Multitenant.Grpc
+namespace PermissionServer.Grpc
 {
     public sealed class RemotePermissionAuthorizeService : GrpcPermissionAuthorize.GrpcPermissionAuthorizeBase
     {
@@ -23,7 +23,7 @@ namespace PermissionServer.Multitenant.Grpc
         {
             _logger.LogInformation($"GRPC remote authorization request started. {request}");
             var decision = await _authEvaluator.EvaluateAsync(request.UserId, request.TenantId, 
-                request.Perms.ToArray());
+                request.Permissions.ToArray());
             
             var reply = new GrpcAuthorizeDecision()
             {

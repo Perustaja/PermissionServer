@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace PermissionServer.Multitenant.Exceptions
+namespace PermissionServer.Exceptions
 {
     public sealed class TenantNotFoundException : Exception
     {

@@ -1,5 +1,5 @@
 
-namespace PermissionServer.Multitenant.Authorization
+namespace PermissionServer.Authorization
 {
     public interface IAuthorizationEvaluator
     {
@@ -9,7 +9,7 @@ namespace PermissionServer.Multitenant.Authorization
         /// </summary>
         /// <param name="userId">The user id for the current request.</param>
         /// <param name="tenantId">The tenant id for the current request.</param>
-        /// <param name="perms">Optional list of specified permissions obtained using Enum.ToString().</param>
-        Task<AuthorizeDecision> EvaluateAsync(string userId, string tenantId, params string[] perms);
+        /// <param name="permissions">Optional list of specified permissions obtained using Enum.ToString().</param>
+        Task<AuthorizeDecision> EvaluateAsync(string userId, string tenantId, params string[] permissions);
     }
 }

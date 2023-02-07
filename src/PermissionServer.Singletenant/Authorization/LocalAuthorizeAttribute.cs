@@ -3,14 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace PermissionServer.Singletenant.Authorization
 {
     /// <summary>
-    /// Marks this method or class as requiring local authorization (i.e. user and permissions are stored
-    /// locally within this project). 
+    /// Marks this method or class as requiring local authorization (i.e. user, tenant, and permissions 
+    /// are stored locally within this project).
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method|AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class LocalAuthorizeAttribute : TypeFilterAttribute
+    /// <typeparam name="TPerm">The permission enum used when registering PermissionServer.</typeparam>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public class LocalAuthorizeAttribute<TPerm> : TypeFilterAttribute
+        where TPerm : Enum
     {
-        /// <param name="permissions">A collection of permissions required.</param>
-        public LocalAuthorizeAttribute(Enum[] permissions) : base(typeof(LocalAuthorizeFilter))
+        /// <param name="permissions">An optional collection of permissions required.</param>
+        public LocalAuthorizeAttribute(params TPerm[] permissions) : base(typeof(LocalAuthorizeFilter<TPerm>))
             => Arguments = new object[] { permissions };
     }
 }

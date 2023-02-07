@@ -8,13 +8,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <LangVersion>preview</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>PermissionServer.Singletenant</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.0.1</Version>
     <Authors>Perustaja</Authors>
     <RepositoryUrl>https://github.com/Perustaja/PermissionServer</RepositoryUrl>
   </PropertyGroup>

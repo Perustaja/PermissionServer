@@ -1,18 +1,26 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
-using PermissionServer.Multitenant.Configuration;
-using PermissionServer.Multitenant.Exceptions;
+using PermissionServer.Configuration;
+using PermissionServer.Exceptions;
 
-namespace PermissionServer.Multitenant.Services
+namespace PermissionServer.Services
 {
+    /// <summary>Provides access to the information of the tenant for a request.</summary>
+    public interface ITenantProvider
+    {
+        /// <returns>The tenant id for the current request.</returns>
+        /// <exception cref="Exceptions.TenantNotFoundException">If tenant id is not found for current request.</exception>
+        Guid GetCurrentRequestTenant();
+    }
+
     public class RouteDataTenantProvider : ITenantProvider
     {
         private readonly HttpContext _httpContext;
-        private readonly MultitenantPermissionServerOptions _psOptions;
+        private readonly PermissionServerOptions _psOptions;
 
         public RouteDataTenantProvider(IHttpContextAccessor contextAccessor,
-            IOptions<MultitenantPermissionServerOptions> psOptions)
+            IOptions<PermissionServerOptions> psOptions)
         {
             _httpContext = contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor.HttpContext));
             _psOptions = psOptions.Value;

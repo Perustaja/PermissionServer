@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{35F7C3F6-BE2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Singletenant", "src\PermissionServer.Singletenant\PermissionServer.Singletenant.csproj", "{5FBC986D-79DC-4CA4-926B-2E758FC65F54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Multitenant", "src\PermissionServer.Multitenant\PermissionServer.Multitenant.csproj", "{A07D9E58-1736-49F6-A040-B60647E7070B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer.Common", "src\PermissionServer.Common\PermissionServer.Common.csproj", "{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServer", "src\PermissionServer\PermissionServer.csproj", "{534E7509-5F4C-44E0-9DD2-75976B087DB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,18 +24,18 @@ Global
 		{5FBC986D-79DC-4CA4-926B-2E758FC65F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FBC986D-79DC-4CA4-926B-2E758FC65F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FBC986D-79DC-4CA4-926B-2E758FC65F54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A07D9E58-1736-49F6-A040-B60647E7070B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A07D9E58-1736-49F6-A040-B60647E7070B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A07D9E58-1736-49F6-A040-B60647E7070B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A07D9E58-1736-49F6-A040-B60647E7070B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{534E7509-5F4C-44E0-9DD2-75976B087DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534E7509-5F4C-44E0-9DD2-75976B087DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534E7509-5F4C-44E0-9DD2-75976B087DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534E7509-5F4C-44E0-9DD2-75976B087DB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5FBC986D-79DC-4CA4-926B-2E758FC65F54} = {35F7C3F6-BE26-4120-989A-8118A965747B}
-		{A07D9E58-1736-49F6-A040-B60647E7070B} = {35F7C3F6-BE26-4120-989A-8118A965747B}
 		{9568D8FE-AF86-4986-B2CB-F6760A3EA8E6} = {35F7C3F6-BE26-4120-989A-8118A965747B}
+		{534E7509-5F4C-44E0-9DD2-75976B087DB5} = {35F7C3F6-BE26-4120-989A-8118A965747B}
 	EndGlobalSection
 EndGlobal

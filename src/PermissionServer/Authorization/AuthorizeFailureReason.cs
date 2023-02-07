@@ -1,4 +1,4 @@
-namespace PermissionServer.Multitenant.Authorization
+namespace PermissionServer.Authorization
 {
     public enum AuthorizeFailureReason
     {

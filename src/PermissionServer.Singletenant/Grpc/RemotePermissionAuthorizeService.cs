@@ -22,7 +22,7 @@ namespace PermissionServer.Singletenant.Grpc
         public override async Task<GrpcAuthorizeDecision> Authorize(GrpcPermissionAuthorizeRequest request, ServerCallContext ctx)
         {
             _logger.LogInformation($"GRPC remote authorization request started. {request}");
-            var decision = await _authEvaluator.EvaluateAsync(request.UserId, request.Perms.ToArray());
+            var decision = await _authEvaluator.EvaluateAsync(request.UserId, request.Permissions.ToArray());
             
             var reply = new GrpcAuthorizeDecision()
             {

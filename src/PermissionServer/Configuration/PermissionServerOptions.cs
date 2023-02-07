@@ -1,8 +1,8 @@
 using PermissionServer.Common.Configuration;
 
-namespace PermissionServer.Multitenant.Configuration
+namespace PermissionServer.Configuration
 {
-    public sealed class MultitenantPermissionServerOptions : PermissionServerOptions
+    public sealed class PermissionServerOptions : BasePermissionServerOptions
     {
         /// <summary>
         /// The route parameter key on your controller methods that contains the tenant id 
