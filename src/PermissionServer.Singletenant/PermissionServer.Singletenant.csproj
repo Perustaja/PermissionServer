@@ -15,9 +15,12 @@
 
   <PropertyGroup>
     <PackageId>PermissionServer.Singletenant</PackageId>
-    <Version>0.0.1</Version>
+    <Version>1.0.0</Version>
     <Authors>Perustaja</Authors>
+    <Description>Library that streamlines permission-based authorization in JWT-based applications.</Description>
     <RepositoryUrl>https://github.com/Perustaja/PermissionServer</RepositoryUrl>
+    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <PackageTags>authorization,permissions,permissionserver</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
