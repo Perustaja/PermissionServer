@@ -7,7 +7,7 @@ namespace PermissionServer
     /// are stored locally within this project).
     /// </summary>
     /// <typeparam name="TPerm">The permission enum used when registering PermissionServer.</typeparam>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method|AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class LocalAuthorizeAttribute<TPerm> : TypeFilterAttribute
         where TPerm : Enum
     {

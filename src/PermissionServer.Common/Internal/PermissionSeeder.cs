@@ -13,7 +13,11 @@ namespace PermissionServer.Common.Internal
                 var p = new Permission<TPerm, TPermCat>(e);
                 var attribs = SeedHelpers.GetCustomAttributes(typeof(TPerm), e.ToString());
 
-                var seedData = attribs.OfType<PermissionDataAttribute<TPermCat>>().First();
+                var seedData = attribs
+                    .OfType<PermissionDataAttribute<TPermCat>>()
+                    .OrderByDescending(a => a.GetType().IsSubclassOf(typeof(PermissionDataAttribute<TPermCat>)))
+                    .FirstOrDefault();
+                
                 p.Name = seedData?.Name ?? p.Id;
                 p.Description = seedData?.Description ?? String.Empty;
                 p.PermCategoryId = seedData?.PermissionCategory?.ToString() ?? String.Empty;

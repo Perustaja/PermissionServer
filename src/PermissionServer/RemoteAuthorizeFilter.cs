@@ -1,3 +1,4 @@
+using Grpc.Net.ClientFactory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,14 +12,19 @@ namespace PermissionServer
     public class RemoteAuthorizeFilter<TPerm> : BaseAuthorizeFilter<TPerm>, IAsyncAuthorizationFilter
         where TPerm : Enum
     {
-        public RemoteAuthorizeFilter(TPerm[] permissions) : base(permissions) { }
+        private readonly bool UsesMultipleAuths;
+        private readonly string ServerName;
+        public RemoteAuthorizeFilter(bool usesMultipleAuths, string serverName, TPerm[] permissions) 
+            : base(permissions) 
+            { 
+                if (usesMultipleAuths && String.IsNullOrEmpty(serverName))
+                    throw new ArgumentNullException("Server name cannot be null or empty in remote authorize attribute.");
+                UsesMultipleAuths = usesMultipleAuths;
+                ServerName = serverName;
+            }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var registeredEnumType 
-                = GetService<IOptions<PermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
-            ValidateUserProvidedEnum(registeredEnumType);
-            
             var logger = GetLogger(context.HttpContext);
 
             if (context.HttpContext.User?.Identity.IsAuthenticated == false)
@@ -28,9 +34,12 @@ namespace PermissionServer
                 return;
             }
 
-            var client = GetService<GrpcPermissionAuthorize.GrpcPermissionAuthorizeClient>(context.HttpContext);
             var tenantId = GetService<ITenantProvider>(context.HttpContext).GetCurrentRequestTenant().ToString();
             var userId = GetUserProvider(context.HttpContext).GetCurrentRequestUser().ToString();
+            var client = (UsesMultipleAuths) 
+                ? GetService<GrpcClientFactory>(context.HttpContext)
+                    .CreateClient<GrpcPermissionAuthorize.GrpcPermissionAuthorizeClient>(ServerName)
+                : GetService<GrpcPermissionAuthorize.GrpcPermissionAuthorizeClient>(context.HttpContext);
 
             var request = new GrpcPermissionAuthorizeRequest()
             {

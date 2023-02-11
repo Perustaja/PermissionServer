@@ -30,11 +30,5 @@ namespace PermissionServer.Common
                 as T 
                 ?? throw new Exception($"PermissionServer was unable to retrieve an instance of {typeof(T)} through DI.");
         }
-
-        protected void ValidateUserProvidedEnum(Type registeredEnumType)
-        {
-            if (registeredEnumType != typeof(TPerm))
-                throw new AttributeArgumentException(registeredEnumType, typeof(TPerm));
-        }
     }
 }
