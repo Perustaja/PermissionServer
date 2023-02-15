@@ -7,6 +7,7 @@ namespace PermissionServer.Common
 
         /// <summary>
         /// The key in the JWT that corresponds to the user id for the current request.
+        /// <br/>
         /// Default value is "sub".
         /// </summary>
         public string JwtClaimUserIdentifier { get; set; } = "sub";

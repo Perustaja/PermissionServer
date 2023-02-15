@@ -16,10 +16,6 @@ namespace PermissionServer.Singletenant
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var registeredEnumType 
-                = GetService<IOptions<PermissionServerOptions>>(context.HttpContext).Value.PermissionEnumType;
-            ValidateUserProvidedEnum(registeredEnumType);
-            
             var logger = GetLogger(context.HttpContext);
             logger.LogInformation("Beginning local authorization request.");
 
