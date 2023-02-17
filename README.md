@@ -5,3 +5,4 @@ Check out the [demo](https://github.com/Perustaja/PermissionServerDemo) to see P
 
 See the [wiki](https://github.com/Perustaja/PermissionServer/wiki) for a quick start and full documentation.
 
+If you feel anything is lacking or there are features you'd need before adoption, feel free to open an issue after combing the [roadmap](https://github.com/Perustaja/PermissionServer/wiki/Roadmap).
